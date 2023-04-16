@@ -1,0 +1,25 @@
+<% layout('layouts/boilerplate')%>
+<!-- https://source.unsplash.com/collection/52314404 -->
+   <h1>All Events!</h1>
+   <div>
+         <a href="/occasions/new">Add Event</a>
+   </div>
+   <% for (let occasion of occasions){ %>
+      <div class="card" mb-3>
+          <div class="row">
+              <div class="col-md-4">
+                  <img class="img-fluid" alt="" src="<%=occasion.image%>">
+              </div>
+              <div class="col-md-8">
+                  <div class="card-body">
+                      <h5 class="card-title"><%= occasion.title %></h5>
+                      <p class="card-text"><%= occasion.description %></p>
+                      <p class="card-text">
+                          <small class="text-muted"><%= occasion.location %></small>
+                      </p>
+                      <a class="btn btn-primary" href="/occasions/<%=occasion._id%>">View <%=occasion.title%></a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  <% } %>

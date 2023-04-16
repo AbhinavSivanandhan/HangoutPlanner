@@ -1,0 +1,75 @@
+<% layout('layouts/boilerplate')%>
+<div class="row">
+    <h1 class="text-center">Edit occasion</h1>
+    <div class="col-6 offset-3">      
+        <form action="/occasions/<%=occasion._id%>?_method=PUT" method="POST" novalidate class="validated-form" required>
+            <div class="mb-3">
+                <label class="form-label" for="title">Title</label>
+                <input class="form-control" type="text" id="title" name="occasion[title]" value="<%= occasion.title %>" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="location">Location</label>
+                <input class="form-control" type="text" id="location" name="occasion[location]" value="<%= occasion.location %>" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+               <label class="form-label" for="participants">Participants</label>
+               <input class="form-control" type="text" id="participants" name="occasion[participants]" value="<%= occasion.participants %>" required>
+               <div class="valid-feedback">
+                   Looks good!
+               </div>
+           </div>
+           <div class="mb-3">
+            <label class="form-label" for="startDate">startDate</label>
+            <input class="form-control" type="datetime-local" id="startDate" name="occasion[startDate]" value="<%= occasion.startDate.toISOString().slice(0,16) %>" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        <div class="mb-3">
+         <label class="form-label" for="endDate">endDate</label>
+         <input class="form-control" type="datetime-local" id="endDate" name="occasion[endDate]" value="<%= occasion.endDate.toISOString().slice(0,16) %>" required>
+         <div class="valid-feedback">
+             Looks good!
+         </div>
+     </div>
+            <div class="mb-3">
+                <label class="form-label" for="image">Image URL</label>
+                <input class="form-control" type="text" id="image" name="occasion[image]" value="<%= occasion.image %>" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label" for="price">Price</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="price-label">$</span>
+                    <input type="text" class="form-control" placeholder="0.00" id="price" aria-label="Price" aria-describedby="price-label" name="occasion[price]" value="<%= occasion.price %>" required/>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+            </div>
+ 
+            <div class="mb-3">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" type="text" id="description" name="occasion[description]" required> <%= occasion.description %> </textarea>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+            <button class="btn btn-info">Update occasion</button>
+            </div>
+        </form>
+        
+        <a href="/occasions/<%=occasion._id%>">Back to occasion</a>
+        
+    </div>
+</div>

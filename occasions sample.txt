@@ -1,0 +1,47 @@
+occasion 1: 
+
+Title: team part 1
+price(per person): 10 dollars 
+description: Team outing Q1
+location: Decode brewery
+participants: Abhinav, Rahul, Akhil, Pallavi, Yash, Sandeep, Kamini, Ravinder, Anurag
+startDate: 4 February 5:30pm
+endDate: 4 February 10pm
+
+Future parameters:
+Probability: 95%,
+Risk: 5%,
+Convenience: 70%,
+BudgetAdherance: 100%
+
+occasion 2: 
+
+Title: Ekatram
+price(per person): 0 dollars 
+description: Townhall
+location: Westin hotel Gurgaon
+participants: Abhinav, Akhil, Pallavi, Yash, Sandeep, Kamini, Ravinder, Ritu, Anurag
+startDate: 14 March 2pm
+endDate: 14 March 9pm
+
+Future parameters:
+Probability: 99%,
+Risk: 1%,
+Convenience: 90%,
+BudgetAdherance: 80%
+
+occasion 3: 
+
+Title: Winter Shopping
+price(per person): 80 dollars 
+description: Winter Shopping
+location: Star mall Gurgaon
+participants: Abhinav, Akhil, Rahul
+startDate: 14 March 2pm
+endDate: 14 March 5:30pm
+
+Future parameters:
+Probability: 97%,
+Risk: 3%,
+Convenience: 95%,
+BudgetAdherance: 40%
