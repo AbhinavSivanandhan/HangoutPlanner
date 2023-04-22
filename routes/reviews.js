@@ -24,6 +24,7 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
    occasion.reviews.push(review);
    await review.save();
    await occasion.save();
+   req.flash('success', 'Successfully created new review');
    res.redirect(`/occasions/${occasion._id}`);
 }))
 
@@ -32,6 +33,8 @@ router.delete('/:reviewId', catchAsync(async (req, res) => {
    await Occasion.findByIdAndUpdate(id, {  $pull: { reviews: reviewId } });
       //update reference to review objectid. $pull removes one or all occurences of a value in array
    await Review.findByIdAndDelete(req.params.reviewId); //delete review
+   req.flash('success', 'Successfully deleted the review');
+
    res.redirect(`/occasions/${id}`);
 }))
 
