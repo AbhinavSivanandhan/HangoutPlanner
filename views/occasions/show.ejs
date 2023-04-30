@@ -45,9 +45,12 @@
         <div class="card mb-1">
             <!-- tags come here -->
             <div class="container">
+                <!--<form action="/occasions/<%=occasion._id%>/tags" method="POST">  class="mb-3 validated-form" novalidate> -->
                 <div class="tag-container">
-                   <input />
+                   <input class="form-control" type="text" id="tagList" />
                 </div>
+                <button class="btn btn-success" onclick="sendTaglist()">Tag it!</button>
+                <!-- </form> -->
             </div>
         </div>
         <% for(let review of occasion.reviews) { %>
@@ -117,6 +120,39 @@ document.addEventListener('click', function(e){
     }
 })
 
+const inputField = document.getElementById("tagList");
+  inputField.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  });
+
+function sendTaglist(){
+    const url = new URL(window.location.href);
+    const occasion_id = url.pathname.split('occasions/').pop();
+    // console.log(tags);
+    const post_url='/occasions/'+occasion_id+'/tags'
+    fetch(post_url, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(tags)
+})
+.then(response => {
+  if (response.ok) {
+    // console.log(response)
+    return response.json();
+  }
+  throw new Error('Network response was not ok.');
+})
+.then(json => {
+  console.log('Data sent successfully:', json);
+})
+.catch(error => {
+  console.error('Error sending data:', error);
+});
+}
 </script>
 
 

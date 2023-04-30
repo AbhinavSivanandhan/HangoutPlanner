@@ -10,6 +10,7 @@ const methodOverride = require('method-override');
 const occasionsRoutes = require('./routes/occasions');
 const reviewsRoutes = require('./routes/reviews');
 const usersRoutes = require('./routes/users');
+const tagsRoutes = require('./routes/tags');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -73,6 +74,7 @@ app.get('/fakeUser', async(req, res) => {
 
 app.use('/occasions', occasionsRoutes)
 app.use('/occasions/:id/reviews', reviewsRoutes)
+app.use('/occasions/:id/tags', tagsRoutes)
 app.use('/', usersRoutes)
 
 

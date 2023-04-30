@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Review = require('./review');
+const Tag = require('./tag');
 
 const occasionSchema = new Schema({
    title: String,
@@ -16,6 +17,12 @@ const occasionSchema = new Schema({
          type: Schema.Types.ObjectId,
          ref: 'Review'
       }
+   ],
+   tags: [
+      {
+         type: Schema.Types.ObjectId,
+         ref: 'Tag'
+      }
    ]
 });
 
@@ -24,6 +31,16 @@ occasionSchema.post('findOneAndDelete', async function (doc) { //this will only 
       await Review.deleteMany({
          _id: {
             $in: doc.reviews
+         }
+      })
+   }
+})
+
+occasionSchema.post('findOneAndDelete', async function (doc) { //this will only work if findIdandDelete occcasion route is used, if that is modified then this middleware won't be triggered
+   if (doc) {
+      await Tag.deleteMany({
+         _id: {
+            $in: doc.tags
          }
       })
    }
