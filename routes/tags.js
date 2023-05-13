@@ -16,18 +16,20 @@ const Tag = require('../models/tag');
 //    next();
 //    }
 // }
-
+router.get('/', catchAsync(async (req, res) => {
+        const occasion = await Occasion.findById(req.params.id);
+       // res.json(occasion.tags[0]);
+       const tag_id = occasion.tags[0]
+        const tagRetrieved = await Tag.find({_id : tag_id})
+        res.json(tagRetrieved);
+}))
 
 router.post('/', catchAsync(async (req, res) => {
    const occasion = await Occasion.findById(req.params.id);
    const tag = new Tag(req.body.tag);
    tag.tag=req.body;
-   occasion.tags.push(tag);
-   console.log('start...');
-   console.log(req.body);
-   console.log(tag);
-   console.log('end...');
-   //occasion.tags.push(tag); 
+   occasion.tags.length = 0;
+   occasion.tags.unshift(tag);
    await tag.save();
    await occasion.save();
    req.flash('success', 'Successfully created new tag list');

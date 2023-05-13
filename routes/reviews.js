@@ -21,8 +21,6 @@ const validateReview = (req, res, next) => {
 router.post('/', validateReview, catchAsync(async (req, res) => {
    const occasion = await Occasion.findById(req.params.id);
    const review = new Review(req.body.review);
-   console.log(req.body);
-   console.log(review);
    occasion.reviews.push(review);
    await review.save();
    await occasion.save();

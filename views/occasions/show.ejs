@@ -12,14 +12,17 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item text-muted"><%= occasion.description%>. Priced at $<%= occasion.price%>/person</li>
                 <li class="list-group-item"><%= occasion.participants%></li>
+                <li class="list-group-item">Submitted by <%= occasion.author[0].username %></li>
                 <li class="list-group-item">From <%= occasion.startDate%> to <%= occasion.endDate%></li>
             </ul>
+            <% if(currentUser && occasion.author.equals(currentUser._id)) {%>
             <div class="card-body">
                 <a class="card-link btn btn-info" href="/occasions/<%=occasion._id%>/edit">Edit</a>
                 <form class="d-inline" action="/occasions/<%=occasion._id%>?_method=DELETE" method="POST">
                     <button class="btn btn-danger">Delete</button>
                 </form>
             </div>
+            <% } %>
             <div class="card-footer text-muted">
                 2 days ago
             </div>
@@ -64,6 +67,7 @@
             </div>
         </div>
         <% } %>
+
 
     </div>
 </div>
@@ -153,6 +157,54 @@ function sendTaglist(){
   console.error('Error sending data:', error);
 });
 }
+
+// function getTaglist(){
+    
+// }
+function getTaglist(){
+  const url = new URL(window.location.href);
+  const occasion_id = url.pathname.split('occasions/').pop();
+  console.log('occ id:'+occasion_id);
+    // console.log(tags);
+    const get_url='/occasions/'+occasion_id+'/tags'
+    console.log('get_url: '+get_url);
+    fetch(get_url)
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Network response was not ok.');
+  })
+  .then(tagsJSON => {
+    // Assign the tags array to a variable
+    console.log(tagsJSON[0].tag);
+    tags = Array.from(tagsJSON[0].tag);
+    console.log('Tags:', tags);
+    console.log('Tagstype:', typeof tags);
+  })
+  .then(tagsJSON => {
+    reset(); 
+  //var dummy = ['a','b','c']
+  tags.slice().reverse().forEach(function(tag){
+      const input = createTag(tag);
+      tagContainer.prepend(input);
+  })
+  //tags=tags;
+  }) 
+  .catch(error => {
+    console.error('Error retrieving tags:', error);
+  });
+  
+  
+ // console.log('reload the page');
+
+}
+document.addEventListener("DOMContentLoaded", function() {
+  // Code to be executed when the page is fully loaded
+  getTaglist();
+  //dummyLoad();
+});
+
 </script>
 
 

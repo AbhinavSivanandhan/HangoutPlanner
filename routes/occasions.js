@@ -31,13 +31,15 @@ router.get('/new', isLoggedIn, async (req, res) => {
 router.post('/', isLoggedIn, validateOccasion, catchAsync(async (req, res, next) => {
 //if(!req.body.occasion) throw new ExpressError('Invalid Occasion Data', 400);
    const occasion = new Occasion(req.body.occasion);
+   occasion.author = req.user._id;
    await occasion.save();
    req.flash('success', 'Successfully made a new event');
    res.redirect(`/occasions/${occasion._id}`);
 }))
 
 router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
-   const occasion = await Occasion.findById(req.params.id).populate('reviews');
+   const occasion = await Occasion.findById(req.params.id).populate('reviews').populate('author');
+   console.log(occasion);
    if(!occasion){
       req.flash('error', 'Cannot find that event!')
       res.redirect('/occasions');

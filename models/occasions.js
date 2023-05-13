@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Review = require('./review');
+//const User = require('./user');
 const Tag = require('./tag');
 
 const occasionSchema = new Schema({
@@ -12,6 +13,12 @@ const occasionSchema = new Schema({
    participants: String,
    startDate: Date, 
    endDate: Date,
+   author: [
+      {
+         type: Schema.Types.ObjectId,
+         ref: 'User'
+      }
+   ],
    reviews: [
       {
          type: Schema.Types.ObjectId,

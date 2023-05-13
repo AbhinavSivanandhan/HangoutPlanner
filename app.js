@@ -15,7 +15,7 @@ const tagsRoutes = require('./routes/tags');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user')
-
+mongoose.set("strictQuery", false);
 mongoose.connect('mongodb://localhost:27017/hangout-planner',{
   useNewUrlParser: true,
   useUnifiedTopology: true
