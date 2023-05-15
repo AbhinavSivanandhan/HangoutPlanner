@@ -13,12 +13,10 @@ const occasionSchema = new Schema({
    participants: String,
    startDate: Date, 
    endDate: Date,
-   author: [
-      {
+   author: {
          type: Schema.Types.ObjectId,
          ref: 'User'
-      }
-   ],
+   },
    reviews: [
       {
          type: Schema.Types.ObjectId,

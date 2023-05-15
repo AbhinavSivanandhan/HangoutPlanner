@@ -4,23 +4,12 @@ const catchAsync = require('../utils/catchAsync');
 const Occasion = require('../models/occasions');
 const Review = require('../models/review');
 const {occasionSchema, reviewSchema} = require('../schemas.js');
+const {validateReview, isLoggedIn, isReviewAuthor} = require('../middleware');
 
-const validateReview = (req, res, next) => {
-   const { error } = reviewSchema.validate(req.body);
-   //console.log(result);
-   if(error){
-      const msg = error.details.map(el => el.message).join(',')
-      throw new ExpressError(msg, 400)
-   }
-   else{
-   next();
-   }
-}
-
-
-router.post('/', validateReview, catchAsync(async (req, res) => {
+router.post('/', isLoggedIn, validateReview, catchAsync(async (req, res) => {
    const occasion = await Occasion.findById(req.params.id);
    const review = new Review(req.body.review);
+   review.author = req.user._id;
    occasion.reviews.push(review);
    await review.save();
    await occasion.save();
@@ -28,7 +17,7 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
    res.redirect(`/occasions/${occasion._id}`);
 }))
 
-router.delete('/:reviewId', catchAsync(async (req, res) => {
+router.delete('/:reviewId', isLoggedIn, isReviewAuthor,catchAsync(async (req, res) => {
    const { id, reviewId } = req.params;
    await Occasion.findByIdAndUpdate(id, {  $pull: { reviews: reviewId } });
       //update reference to review objectid. $pull removes one or all occurences of a value in array

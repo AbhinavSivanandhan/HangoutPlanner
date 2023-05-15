@@ -1,22 +1,8 @@
 const express = require('express')
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
-const ExpressError = require('../utils/ExpressError');
 const Occasion = require('../models/occasions');
-const {occasionSchema} = require('../schemas.js');
-const {isLoggedIn} = require('../middleware');
-
-const validateOccasion = (req, res, next) => {
-   const { error } = occasionSchema.validate(req.body);
-   //console.log(result);
-   if(error){
-      const msg = error.details.map(el => el.message).join(',')
-      throw new ExpressError(msg, 400)
-   }
-   else{
-   next();
-   }
-}
+const {isLoggedIn, validateOccasion, isAuthor} = require('../middleware');
 
 router.get('/', catchAsync(async (req, res) => {
    const occasions = await Occasion.find({});
@@ -29,7 +15,6 @@ router.get('/new', isLoggedIn, async (req, res) => {
 })
 
 router.post('/', isLoggedIn, validateOccasion, catchAsync(async (req, res, next) => {
-//if(!req.body.occasion) throw new ExpressError('Invalid Occasion Data', 400);
    const occasion = new Occasion(req.body.occasion);
    occasion.author = req.user._id;
    await occasion.save();
@@ -38,7 +23,12 @@ router.post('/', isLoggedIn, validateOccasion, catchAsync(async (req, res, next)
 }))
 
 router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
-   const occasion = await Occasion.findById(req.params.id).populate('reviews').populate('author');
+   const occasion = await Occasion.findById(req.params.id).populate({
+      path: 'reviews',
+      populate: {
+         path: 'author'
+      }
+   }).populate('author');
    console.log(occasion);
    if(!occasion){
       req.flash('error', 'Cannot find that event!')
@@ -47,8 +37,9 @@ router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
    res.render('occasions/show', { occasion }); //.populate expands the id in reviews to full object
 }))
 
-router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
-   const occasion = await Occasion.findById(req.params.id);
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
+   const { id } = req.params;
+   const occasion = await Occasion.findById(id);
    if(!occasion){
       req.flash('error', 'Cannot find that event!')
       res.redirect('/occasions');
@@ -56,14 +47,14 @@ router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
    res.render('occasions/edit', { occasion });
 }))
 
-router.put('/:id', isLoggedIn, validateOccasion, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, isAuthor,  validateOccasion, catchAsync(async (req, res) => {
    const { id } = req.params;
-   const occasion = await Occasion.findByIdAndUpdate(id, {...req.body.occasion});
+   const occasion = await Occasion.findByIdAndUpdate(id, {...req.body.occasion}); //change this later to just use previously found id to update. reduces cost
    req.flash('success', 'Successfully updated the event');
    res.redirect(`/occasions/${occasion._id}`)
 }))
 
-router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
    const { id } = req.params;
    await Occasion.findByIdAndDelete(id);
    res.redirect('/occasions');
