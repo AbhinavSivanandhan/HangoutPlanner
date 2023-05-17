@@ -3,19 +3,7 @@ const router = express.Router({mergeParams: true}); //so that we have access to 
 const catchAsync = require('../utils/catchAsync');
 const Occasion = require('../models/occasions');
 const Tag = require('../models/tag');
-//const {occasionSchema, tagSchema} = require('../schemas.js');
 
-// const validateTag = (req, res, next) => {
-//    const { error } = tagSchema.validate(req.body);
-//    //console.log(result);
-//    if(error){
-//       const msg = error.details.map(el => el.message).join(',')
-//       throw new ExpressError(msg, 400)
-//    }
-//    else{
-//    next();
-//    }
-// }
 router.get('/', catchAsync(async (req, res) => {
         const occasion = await Occasion.findById(req.params.id);
        // res.json(occasion.tags[0]);
@@ -35,7 +23,7 @@ router.post('/', catchAsync(async (req, res) => {
    req.flash('success', 'Successfully created new tag list');
    res.redirect(`/occasions/${occasion._id}`);
 }))
-//use this route if tag list is empty. or eventually if this is the only occurrence of a tag.
+
 router.delete('/:tagId', catchAsync(async (req, res) => {
    const { id, tagId } = req.params;
    await Occasion.findByIdAndUpdate(id, {  $pull: { reviews: tagId } });
