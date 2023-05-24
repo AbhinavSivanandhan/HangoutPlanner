@@ -2,7 +2,7 @@
 <div class="row">
     <h1 class="text-center">Edit occasion</h1>
     <div class="col-6 offset-3">      
-        <form action="/occasions/<%=occasion._id%>?_method=PUT" method="POST" novalidate class="validated-form" required>
+        <form action="/occasions/<%=occasion._id%>?_method=PUT" method="POST" novalidate class="validated-form" enctype="multipart/form-data" required>
             <div class="mb-3">
                 <label class="form-label" for="title">Title</label>
                 <input class="form-control" type="text" id="title" name="occasion[title]" value="<%= occasion.title %>" required>
@@ -39,11 +39,8 @@
          </div>
      </div>
             <div class="mb-3">
-                <label class="form-label" for="image">Image URL</label>
-                <input class="form-control" type="text" id="image" name="occasion[image]" value="<%= occasion.image %>" required>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
+                <label class="form-label" for="image">Add Images</label>
+                <input type="file" name="image" id="image" multiple>
             </div>
             
             <div class="mb-3">

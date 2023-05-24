@@ -12,8 +12,10 @@ module.exports.renderNewForm = async (req, res) => {
 
 module.exports.createOccasion = async (req, res, next) => {
    const occasion = new Occasion(req.body.occasion);
+   occasion.images = req.files.map(f => ({ url: f.path, filename: f.filename}))
    occasion.author = req.user._id;
    await occasion.save();
+   console.log(occasion);
    req.flash('success', 'Successfully made a new event');
    res.redirect(`/occasions/${occasion._id}`);
 }
@@ -46,6 +48,9 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.updateOccasion = async (req, res) => {
    const { id } = req.params;
    const occasion = await Occasion.findByIdAndUpdate(id, {...req.body.occasion}); //change this later to just use previously found id to update. reduces cost
+   const imgs = req.files.map(f => ({ url: f.path, filename: f.filename}));
+   occasion.images.push(...imgs);
+   await occasion.save();
    req.flash('success', 'Successfully updated the event');
    res.redirect(`/occasions/${occasion._id}`)
 }

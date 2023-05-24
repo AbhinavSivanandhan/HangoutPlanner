@@ -7,7 +7,7 @@ module.exports.occasionSchema = Joi.object({
       participants: Joi.string().required(),
       startDate: Joi.date().required(),
       endDate: Joi.date().required(),
-      image: Joi.string().required(),
+      // image: Joi.string().required(),
       price: Joi.number().required().min(0),
       description: Joi.string().required()
    }).required()
