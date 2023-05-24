@@ -1,5 +1,5 @@
 const Occasion = require('../models/occasions');
-
+const {cloudinary} = require('../cloudinary');
 module.exports.index = async (req, res) => {
    const occasions = await Occasion.find({});
    res.render('occasions/index',{ occasions });
@@ -47,10 +47,18 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateOccasion = async (req, res) => {
    const { id } = req.params;
+   console.log(req.body);
    const occasion = await Occasion.findByIdAndUpdate(id, {...req.body.occasion}); //change this later to just use previously found id to update. reduces cost
    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename}));
    occasion.images.push(...imgs);
    await occasion.save();
+   if (req.body.deleteImages){
+      for(let filename of req.body.deleteImages){
+         await cloudinary.uploader.destroy(filename);
+      }
+      await occasion.updateOne({$pull: {images: {filename: {$in : req.body.deleteImages}}}})
+      console.log(occasion)
+   }
    req.flash('success', 'Successfully updated the event');
    res.redirect(`/occasions/${occasion._id}`)
 }
