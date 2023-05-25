@@ -92,8 +92,13 @@
                 <div class="tag-container">
                    <input class="form-control" type="text" id="tagList" />
                 </div>
-                <button class="btn btn-success" onclick="sendTaglist()">Tag it!</button>
+                <button id="tagButton" class="btn btn-success" onclick="sendTaglist()">Tag it!</button>
+
                 <!-- </form> -->
+            </div>
+            <div id="tagAlert" class="alert alert-success alert-dismissible fade show d-none" role="alert">
+              Tagged!
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
         <% for(let review of occasion.reviews) { %>
@@ -169,6 +174,14 @@ document.addEventListener('click', function(e){
         addTags();
     }
 })
+
+document.addEventListener("DOMContentLoaded", function() {
+    var button = document.getElementById("tagButton");
+    var alert = document.getElementById("tagAlert");
+    button.addEventListener("click", function() {
+      alert.classList.remove("d-none");
+    });
+  });
 
 const inputField = document.getElementById("tagList");
   inputField.addEventListener("keydown", function (event) {
