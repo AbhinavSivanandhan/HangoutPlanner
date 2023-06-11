@@ -12,6 +12,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" for="location">Location</label>
+                <button type="button" class="btn btn-dark btn-sm" onclick="getCurrentLocation()">Set Current Location</button>
                 <input class="form-control" type="text" id="location" name="occasion[location]" required>
                 <div class="valid-feedback">
                     Looks good!
@@ -78,7 +79,49 @@
             </div>
         </form>
         
-        <a href="/occasions">All occasions</a>
-        
+        <!-- <a href="/occasions">All occasions</a> -->
+
     </div>
 </div>
+<script>
+    console.log('this works');
+    function getCurrentLocation() {
+        if (navigator.geolocation) {
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            };
+
+            // Get current position
+            navigator.geolocation.getCurrentPosition(success, error, options);
+        } else {
+            console.log('Geolocation is not supported by this browser.');
+        }
+
+        function success(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            console.log('Current latitude:', latitude);
+            console.log('Current longitude:', longitude);
+
+            const geocodingApiUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
+            fetch(geocodingApiUrl) 
+                .then(response => response.json())
+                .then(data => {
+                    const inputElement = document.getElementById('location');
+                    const locationData = JSON.stringify(data);
+                    inputElement.value = data.address.city+', '+data.address.country;
+                })
+                .catch(error => {
+                    console.log('Error occurred while retrieving geocoding data:', error);
+                });
+        }
+
+        function error(err) {
+            console.log('Error occurred while retrieving location:', err.message);
+        }
+    }
+</script>
+
