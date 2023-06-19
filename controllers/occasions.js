@@ -17,10 +17,10 @@ module.exports.renderNewForm = async (req, res) => {
 
 module.exports.createOccasion = async (req, res, next) => {
    const geoData = await geocoder.forwardGeocode({
-      query: 'Yosemite, CA',
+      query: 'req.body.occasion.location',
       limit: 1
    }).send()
-   console.log(geoData.body.features);
+   console.log(geoData.body.features[0].geometry.coordinates);
    const occasion = new Occasion(req.body.occasion);
    occasion.images = req.files.map(f => ({ url: f.path, filename: f.filename}))
    occasion.author = req.user._id;
