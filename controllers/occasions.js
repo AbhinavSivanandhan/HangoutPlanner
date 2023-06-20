@@ -1,7 +1,7 @@
 const Occasion = require('../models/occasions');
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
 const mapBoxToken = process.env.MAPBOX_TOKEN;
-const geocoder = mbxGeocoding({ accessTOken: mapBoxToken }) //this contains the forward and backward geocoding methods
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken }) //this contains the forward and backward geocoding methods
 const {cloudinary} = require('../cloudinary');
 
 
@@ -17,11 +17,12 @@ module.exports.renderNewForm = async (req, res) => {
 
 module.exports.createOccasion = async (req, res, next) => {
    const geoData = await geocoder.forwardGeocode({
-      query: 'req.body.occasion.location',
+      query: req.body.occasion.location,
       limit: 1
    }).send()
    console.log(geoData.body.features[0].geometry.coordinates);
    const occasion = new Occasion(req.body.occasion);
+   occasion.geometry = geoData.body.features[0].geometry;
    occasion.images = req.files.map(f => ({ url: f.path, filename: f.filename}))
    occasion.author = req.user._id;
    await occasion.save();
