@@ -13,6 +13,8 @@ ImageSchema.virtual('thumbnail').get(function(){
    return this.url.replace('/upload', '/upload/w_200');
 });
 
+const opts = { toJSON: {virtuas:true }};
+
 const occasionSchema = new Schema({
    title: String,
    images: [ImageSchema],
@@ -49,6 +51,12 @@ const occasionSchema = new Schema({
          ref: 'Tag'
       }
    ]
+}, opts);
+
+occasionSchema.virtual('properties.poppMarkup').get(function(){
+   return `
+   <strong><a href="occasions/${this._id}">${this.title}</a></strong>
+   <p>${this.description.substring(0, 20)}...</p>`;
 });
 
 occasionSchema.post('findOneAndDelete', async function (doc) { //this will only work if findIdandDelete occcasion route is used, if that is modified then this middleware won't be triggered

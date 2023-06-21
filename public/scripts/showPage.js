@@ -1,4 +1,3 @@
-<script>
     const tagContainer = document.querySelector('.tag-container');
 
     const input = document.querySelector('.tag-container input');
@@ -148,4 +147,3 @@ center: [-74.5, 40], // starting position [lng, lat]
 zoom: 9, // starting zoom
 });
 
-</script>
