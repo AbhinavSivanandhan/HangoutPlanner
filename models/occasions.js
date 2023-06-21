@@ -13,7 +13,7 @@ ImageSchema.virtual('thumbnail').get(function(){
    return this.url.replace('/upload', '/upload/w_200');
 });
 
-const opts = { toJSON: {virtuas:true }};
+const opts = { toJSON: {virtuals: true }};
 
 const occasionSchema = new Schema({
    title: String,
@@ -53,7 +53,7 @@ const occasionSchema = new Schema({
    ]
 }, opts);
 
-occasionSchema.virtual('properties.poppMarkup').get(function(){
+occasionSchema.virtual('properties.popUpMarkup').get(function(){
    return `
    <strong><a href="occasions/${this._id}">${this.title}</a></strong>
    <p>${this.description.substring(0, 20)}...</p>`;

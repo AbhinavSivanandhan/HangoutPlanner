@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/styles/stars.css">
 <script>
   const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-  const occasion = <%- JSON.stringify(occasion)%>;
+  const occasion = <%- JSON.stringify(occasion) %>
 </script>
 <div class="row">
     <div class="col-6">
@@ -285,7 +285,7 @@ new mapboxgl.Marker()
           )
   )
   .addTo(map)
-
+console.log(occasion.geometry.coordinates);
 </script>
 
    
