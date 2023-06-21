@@ -268,23 +268,23 @@ getTaglist();
 //dummyLoad();
 });
 
-mapboxgl.accessToken = mapToken;
-const map = new mapboxgl.Map({
-container: 'map', // container ID
-style: 'mapbox://styles/mapbox/streets-v12', // style URL
-center: occasion.geometry.coordinates, // starting position [lng, lat]
-zoom: 10, // starting zoom
-});
+// mapboxgl.accessToken = mapToken;
+// const map = new mapboxgl.Map({
+// container: 'map', // container ID
+// style: 'mapbox://styles/mapbox/light-v12', // style URL
+// center: occasion.geometry.coordinates, // starting position [lng, lat]
+// zoom: 10, // starting zoom
+// });
 
-new mapboxgl.Marker()
-  .setLngLat(occasion.geometry.coordinates)
-  .setPopup(
-      new mapboxgl.Popup({offset: 25})
-          .setHTML(
-            `<h3>${occasion.title}</h3><p>${occasion.location}</p>`
-          )
-  )
-  .addTo(map)
+// new mapboxgl.Marker()
+//     .setLngLat(occasion.geometry.coordinates)
+//     .setPopup(
+//         new mapboxgl.Popup({ offset: 25 })
+//             .setHTML(
+//                 `<h3>${occasion.title}</h3><p>${occasion.location}</p>`
+//             )
+//     )
+//     .addTo(map)
 console.log(occasion.geometry.coordinates);
 </script>
 
