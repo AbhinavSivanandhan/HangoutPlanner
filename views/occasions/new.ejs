@@ -24,6 +24,7 @@
                 <div class="valid-feedback">
                     Looks good!
                 </div>
+                    <!-- Add a div on the right side of the Participants mb-3 div -->
             </div>
             <div class="mb-3">
                <label class="form-label" for="startDate">startDate</label>
@@ -112,7 +113,8 @@
                 .then(data => {
                     const inputElement = document.getElementById('location');
                     const locationData = JSON.stringify(data);
-                    inputElement.value = data.address.city+', '+data.address.country;
+                    console.log(locationData);
+                    inputElement.value = data.address.county+', '+data.address.state_district+', '+data.address.country;
                 })
                 .catch(error => {
                     console.log('Error occurred while retrieving geocoding data:', error);
