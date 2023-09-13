@@ -37,7 +37,11 @@
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item text-muted"><%= occasion.description%>. Priced at $<%= occasion.price%>/person</li>
-                <li class="list-group-item"><%= occasion.participants%></li>
+                <li class="list-group-item"><%= occasion.participants%><div class="search-box">
+                  <input type="text" class="form-control" placeholder="Search">
+                  <span class="bi bi-search form-control-feedback"></span>
+                  <button class="btn btn-primary">Search</button>
+                </div></li>
                 <li class="list-group-item">Submitted by <%= occasion.author.username %></li>
                 <li class="list-group-item">From <%= occasion.startDate%> to <%= occasion.endDate%></li>
             </ul>
@@ -286,6 +290,32 @@ getTaglist();
 //     )
 //     .addTo(map)
 console.log(occasion.geometry.coordinates);
-</script>
+const searchInput = document.querySelector('.search-box input');
+const searchButton = document.querySelector('.search-box button');
+const searchResults = document.querySelector('.search-results');
 
+const items = ['apple', 'banana', 'cherry', 'orange', 'pear'];
+
+searchInput.addEventListener('keyup', function() {
+  const value = searchInput.value.toLowerCase();
+  searchResults.innerHTML = '';
+
+  for (const item of items) {
+    if (item.toLowerCase().indexOf(value) !== -1) {
+      const li = document.createElement('li');
+      li.textContent = item;
+      searchResults.appendChild(li);
+    }
+  }
+});
+
+searchButton.addEventListener('click', function() {
+  const value = searchInput.value;
+  const item = items.find(item => item.toLowerCase() === value.toLowerCase());
+
+  if (item) {
+    alert(item);
+  }
+});
+</script>
    
